@@ -1,27 +1,53 @@
-# CI/CD
+-   [What is CI/CD?](#what-is-cicd)
+    -   [Continuous Integration (CI)](#continuous-integration-ci)
+    -   [Continuous Delivery (CD)](#continuous-delivery-cd)
+-   [Why use CI/CD?](#why-use-cicd)
+-   [When is CI/CD useful?](#when-is-cicd-useful)
+-   [Where is CI/CD used?](#where-is-cicd-used)
+-   [How does CI/CD work?](#how-does-cicd-work)
 
-### What is CI/CD?
+## What is CI/CD?
 
 CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps that aims to improve software development and deployment processes, mainly by making them much faster.
 
-#### Continuous Integration (CI)
+### Continuous Integration (CI)
 
-Developers frequently merge their code changes into a central repository. Each merge triggers an automated build and testing process, providing immediate feedback to the team. This enables us to identify bugs early and save time through automation.
+-   Developers frequently merge their code changes into a central repository.
+-   Each merge triggers an automated build and testing process.
+-   Provides immediate feedback to the team.
+-   Can identify bugs early and save time through automation.
 
-#### Continuous Delivery (CD)
+### Continuous Delivery (CD)
 
-Continuous Delivery is about getting the updated program to users quickly and smoothly. With Continuous Delivery, the program is always ready to be sent to users, but someone has to decide when to do it. With Continuous Deployment, the program is sent to users automatically whenever it passes all the tests.
+-   Getting the updated app to users quickly and smoothly.
+-   The app is always ready to be sent to users, but someone has to decide when to do it.
+-   The app is sent to users automatically whenever it passes all the tests.
 
-### Why use CI/CD?
+## Why use CI/CD?
 
-People use CI/CD when they want to improve their programs regularly without causing problems for users. It's commonly used by companies that make apps or websites.
+-   To speed up the release process.
+-   To catch and fix errors quickly.
+-   To improve the quality of software.
+-   To reduce manual work in testing and deploying software.
 
-### How does CI/CD work?
+## When is CI/CD useful?
 
-You can setup a simple CI/CD system with Jenkins, GitHub, AWS, and your own computer (localhost).
+-   When you have a team of developers working on the same project.
+-   When you want to release updates to your app quickly and smoothly.
+-   When you want to make sure your app is always working correctly and passing tests.
+-   When you want to reduce the time and effort spent on testing and deploying software.
+
+## Where is CI/CD used?
+
+-   In software development teams that want to improve their processes.
+-   In companies that want to release updates to their apps quickly and automatically.
+
+## How does CI/CD work?
+
+Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 
 -   Developers write code on their computers and send it to GitHub, which stores the code online.
 -   When new code is sent to GitHub, Jenkins automatically takes the code and runs tests to make sure it works.
 -   If the tests pass, Jenkins can then send the updated code to AWS, which makes it available to users online.
 -   If the tests fail, Jenkins lets the developers know so they can fix the problems.
--   This way, the program is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the program high.
+-   The app is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the app high.
