@@ -10,6 +10,8 @@
 
 CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps that aims to improve software development and deployment processes, mainly by making them much faster.
 
+![](image-2.png)
+
 ### Continuous Integration (CI)
 
 -   Developers frequently merge their code changes into a central repository.
@@ -17,11 +19,15 @@ CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps th
 -   Provides immediate feedback to the team.
 -   Can identify bugs early and save time through automation.
 
+![](image.png)
+
 ### Continuous Delivery (CD)
 
 -   Getting the updated app to users quickly and smoothly.
 -   The app is always ready to be sent to users, but someone has to decide when to do it.
 -   The app is sent to users automatically whenever it passes all the tests.
+
+![](image-1.png)
 
 ## Why use CI/CD?
 
@@ -51,3 +57,5 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   If the tests pass, Jenkins can then send the updated code to AWS, which makes it available to users online.
 -   If the tests fail, Jenkins lets the developers know so they can fix the problems.
 -   The app is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the app high.
+
+![](ci-cd2.png)
