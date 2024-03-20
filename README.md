@@ -5,6 +5,7 @@
 -   [When is CI/CD useful?](#when-is-cicd-useful)
 -   [Where is CI/CD used?](#where-is-cicd-used)
 -   [How does CI/CD work?](#how-does-cicd-work)
+-   [Integrating GitHub Webhooks to a Jenkins Pipeline](#integrating-github-webhooks-to-a-jenkins-pipeline)
 
 ## What is CI/CD?
 
@@ -59,3 +60,11 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   The app is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the app high.
 
 ![](ci-cd2.png)
+
+## Integrating GitHub Webhooks to a Jenkins Pipeline
+
+![](image-3.png)
+
+![](image-4.png)
+
+![](image-5.png)
