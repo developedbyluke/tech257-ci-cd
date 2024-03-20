@@ -21,7 +21,7 @@ People use CI/CD when they want to improve their programs regularly without caus
 You can setup a simple CI/CD system with Jenkins, GitHub, AWS, and your own computer (localhost).
 
 -   Developers write code on their computers and send it to GitHub, which stores the code online.
--   When new code is sent to GitHub, Jenkins (running on your computer or AWS) automatically takes the code and runs tests to make sure it works.
+-   When new code is sent to GitHub, Jenkins automatically takes the code and runs tests to make sure it works.
 -   If the tests pass, Jenkins can then send the updated code to AWS, which makes it available to users online.
 -   If the tests fail, Jenkins lets the developers know so they can fix the problems.
 -   This way, the program is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the program high.
