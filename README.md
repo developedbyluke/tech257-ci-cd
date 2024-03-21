@@ -17,6 +17,8 @@
 -   [Deploying an app on AWS with Jenkins](#deploying-an-app-on-aws-with-jenkins)
     -   [Create an EC2 instance](#create-an-ec2-instance)
     -   [Create a new Jenkins job](#create-a-new-jenkins-job)
+-   [Integrating CD into the rest of the pipeline](#integrating-cd-into-the-rest-of-the-pipeline)
+    -   [Test the setup](#test-the-setup-1)
 
 ## What is CI/CD?
 
@@ -153,23 +155,49 @@ Launch an EC2 instance and configure it ensuring SSH access is allowed as we wil
 -   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
 -   Add the private SSH key to the credentials part.
 -   Specify the branch to use.
+-   In the 'Build Environment' section, select 'SSH Agent' and choose the credentials with the private key that is needed to SSH into the EC2 instance.
 -   In the 'Build' section, add an 'Execute shell' build step.
 -   Enter the commands to SSH into the EC2 instance.
     -   Use the `-o "StrictHostKeyChecking=no"` option to avoid the prompt for adding the host to known hosts.
     -   Update the instance with the latest packages and install Nginx.
     -   Add a reverse proxy to the Nginx configuration to forward traffic to the app running on port 3000.
     -   Restart and enable Nginx.
+    -   Install software needed to run the app.
+    -   CD into the app folder and install the dependencies.
 
 ```bash
+rsync -avz -e "ssh -o StrictHostKeyChecking=no" app ubuntu@<ec2-public-ip>:/home/ubuntu/
+rsync -avz -e "ssh -o StrictHostKeyChecking=no" environment ubuntu@<ec2-public-ip>:/home/ubuntu/
+
 ssh -o "StrictHostKeyChecking=no" ubuntu@<ec2-public-ip> <<EOF
     sudo apt-get update -y
     sudo apt-get upgrade -y
 
     sudo apt-get install nginx -y
 
-    sudo sed -i "s|try_files .*;|proxy_pass http://127.0.0.1:3000;|g" /etc/nginx/sites-available/default
-
     sudo systemctl restart nginx
     sudo systemctl enable nginx
+
+    cd environment/app
+    chmod +x provision.sh
+    ./provision.sh
+
+    cd ~/app
+    npm install
 EOF
 ```
+
+## Integrating CD into the rest of the pipeline
+
+Following on from the previous section, we can trigger the deployment job after the merge job is successful.
+
+This will enable us to automatically deploy the app to AWS whenever new code is merged into the main branch.
+
+-   In the post-build actions of the merge job, add a trigger to build another project and put the name of the job that will deploy the app, e.g. cd-job.
+
+### Test the setup
+
+-   Make a change to the code and push it to the dev branch.
+-   Wait for the Jenkins merge job to run and merge the code into the main branch.
+-   Wait for the Jenkins deploy job to run and deploy the app to AWS.
+-   Go to the EC2 instance public IP address in a browser and check if the app is running with the latest changes.
