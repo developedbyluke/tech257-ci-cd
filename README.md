@@ -6,6 +6,8 @@
 -   [Where is CI/CD used?](#where-is-cicd-used)
 -   [How does CI/CD work?](#how-does-cicd-work)
 -   [Integrating GitHub Webhooks to a Jenkins Pipeline](#integrating-github-webhooks-to-a-jenkins-pipeline)
+    -   [Prerequisites](#prerequisites)
+    -   [Create a Jenkins Job](#create-a-jenkins-job)
 
 ## What is CI/CD?
 
@@ -62,6 +64,24 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 ![](ci-cd2.png)
 
 ## Integrating GitHub Webhooks to a Jenkins Pipeline
+
+### Prerequisites
+
+-   [x] Jenkins installed and available on the internet.
+-   [x] Jenkins GitHub plugin installed.
+-   [x] GitHub Repository
+
+### Create a Jenkins Job
+
+-   Click 'New Item' on the Jenkins dashboard.
+-   Enter a name for the job and select 'Freestyle project'.
+-   Provide the GitHub project URL in the 'General' section.
+
+![](image-6.png)
+
+-   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
+-   Add the private SSH key to the credentials part.
+-   Specify the branch to use.
 
 ![](image-3.png)
 
