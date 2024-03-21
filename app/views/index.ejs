@@ -6,31 +6,98 @@
     <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
     <style type="text/css">
         body {
-            text-align: center;
             font-family: 'Slabo 27px', serif;
+            height: 100vh;
+            margin: 0;
+        }
+
+        section {
             height: 100vh;
         }
 
         .vertical-center {
-
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         img {
             width: 150px;
         }
+
+        header {
+            padding: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        header img {
+            width: auto;
+            height: 41px;
+        }
+
+        header div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        header div a {
+            margin: 0 0.5rem;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+        }
+
+        .grid img {
+            width: 50%;
+            aspect-ratio: square;
+            object-fit: contain;
+        }
     </style>
 </head>
 
 <body>
-    <div class="vertical-center">
+    <header>
+        <img
+            src="data:image/png;base64,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" />
+        <div>
+            <a href="#">Home</a>
+            <a href="#cats">Cats</a>
+        </div>
+    </header>
+    <section id="home" class="vertical-center">
         <h1>Welcome to the Sparta Test App 2024</h1>
         <img src="/images/squarelogo.jpg" />
         <h2>The app is running correctly.</h2>
-
-    </div>
+    </section>
+    <section id="cats" class="vertical-center">
+        <div class="grid">
+            <img
+                src="https://png.pngtree.com/png-clipart/20230511/ourmid/pngtree-isolated-cat-on-white-background-png-image_7094927.png" />
+            <img
+                src="https://png.pngtree.com/png-clipart/20230512/original/pngtree-isolated-front-view-cat-on-white-background-png-image_9158426.png" />
+            <img
+                src="https://static.vecteezy.com/system/resources/previews/023/420/116/original/cat-in-transparent-background-generative-ai-free-png.png" />
+            <img
+                src="https://static.vecteezy.com/system/resources/previews/022/718/885/non_2x/cute-young-cat-ai-generative-free-png.png" />
+        </div>
+    </section>
 </body>
 
 </html>
