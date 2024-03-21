@@ -191,7 +191,7 @@ EOF
 
 Following on from the previous section, we can trigger the deployment job after the merge job is successful.
 
-This will enable us to automatically deploy the app to AWS whenever new code is merged into the main branch.
+This will enable us to automatically deploy the app to AWS whenever we make a change to the code and push it to the dev branch.
 
 -   In the post-build actions of the merge job, add a trigger to build another project and put the name of the job that will deploy the app, e.g. cd-job.
 
