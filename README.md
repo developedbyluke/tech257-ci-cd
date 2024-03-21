@@ -22,7 +22,7 @@
 
 CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps that aims to improve software development and deployment processes, mainly by making them much faster.
 
-![](image-2.png)
+![](images/image-2.png)
 
 ### Continuous Integration (CI)
 
@@ -31,7 +31,7 @@ CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps th
 -   Provides immediate feedback to the team.
 -   Can identify bugs early and save time through automation.
 
-![](image.png)
+![](images/image.png)
 
 ### Continuous Delivery (CD)
 
@@ -39,7 +39,7 @@ CI/CD, or Continuous Integration/Continuous Delivery, is a practice in DevOps th
 -   The app is always ready to be sent to users, but someone has to decide when to do it.
 -   The app is sent to users automatically whenever it passes all the tests.
 
-![](image-1.png)
+![](images/image-1.png)
 
 ## Why use CI/CD?
 
@@ -70,7 +70,7 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   If the tests fail, Jenkins lets the developers know so they can fix the problems.
 -   The app is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the app high.
 
-![](image-7.png)
+![](images/image-7.png)
 
 ## Integrating GitHub Webhooks to a Jenkins Pipeline
 
@@ -86,14 +86,14 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   Enter a name for the job and select 'Freestyle project'.
 -   Provide the GitHub project URL in the 'General' section.
 
-![](image-6.png)
+![](images/image-6.png)
 
 -   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
 -   Add the private SSH key to the credentials part.
 -   Specify the branch to use.
 -   In the 'Build Triggers' section, select 'GitHub hook trigger for GITScm polling'.
 
-![](image-3.png)
+![](images/image-3.png)
 
 ### Add a GitHub Webhook
 
@@ -104,13 +104,13 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   Make sure the webhook is active.
 -   Click 'Add webhook'.
 
-![](image-4.png)
+![](images/image-4.png)
 
 Now, whenever a change is pushed to the GitHub repository, Jenkins will automatically trigger the job.
 
 You should see a green checkmark next to the webhook URL in the GitHub settings if it is working correctly.
 
-![](image-5.png)
+![](images/image-5.png)
 
 ## Merging with Jenkins
 
