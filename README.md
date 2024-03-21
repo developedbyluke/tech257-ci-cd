@@ -8,6 +8,15 @@
 -   [Integrating GitHub Webhooks to a Jenkins Pipeline](#integrating-github-webhooks-to-a-jenkins-pipeline)
     -   [Prerequisites](#prerequisites)
     -   [Create a Jenkins Job](#create-a-jenkins-job)
+    -   [Add a GitHub Webhook](#add-a-github-webhook)
+-   [Merging with Jenkins](#merging-with-jenkins)
+    -   [Create a new branch](#create-a-new-branch)
+    -   [Update existing Jenkins job](#update-existing-jenkins-job)
+    -   [Create a new Jenkins job for merging](#create-a-new-jenkins-job-for-merging)
+    -   [Test the setup](#test-the-setup)
+-   [Deploying an app on AWS with Jenkins](#deploying-an-app-on-aws-with-jenkins)
+    -   [Create an EC2 instance](#create-an-ec2-instance)
+    -   [Create a new Jenkins job](#create-a-new-jenkins-job)
 
 ## What is CI/CD?
 
@@ -61,7 +70,7 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   If the tests fail, Jenkins lets the developers know so they can fix the problems.
 -   The app is constantly being improved, tested, and made available to users, all with minimal manual work. It helps teams work together better and keeps the quality of the app high.
 
-![](ci-cd2.png)
+![](image-7.png)
 
 ## Integrating GitHub Webhooks to a Jenkins Pipeline
 
@@ -82,9 +91,85 @@ Using an example of a simple CI/CD pipeline with Jenkins, GitHub, and AWS:
 -   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
 -   Add the private SSH key to the credentials part.
 -   Specify the branch to use.
+-   In the 'Build Triggers' section, select 'GitHub hook trigger for GITScm polling'.
 
 ![](image-3.png)
 
+### Add a GitHub Webhook
+
+-   Go to the GitHub repository settings.
+-   Click on 'Webhooks' and then 'Add webhook'.
+-   Enter the Jenkins URL with '/github-webhook/' at the end, e.g. 'http://jenkins-url/github-webhook/'.
+-   Select 'application/json' as the content type.
+-   Make sure the webhook is active.
+-   Click 'Add webhook'.
+
 ![](image-4.png)
 
+Now, whenever a change is pushed to the GitHub repository, Jenkins will automatically trigger the job.
+
+You should see a green checkmark next to the webhook URL in the GitHub settings if it is working correctly.
+
 ![](image-5.png)
+
+## Merging with Jenkins
+
+### Create a new branch
+
+```bash
+git checkout -b dev
+```
+
+### Update existing Jenkins job
+
+-   In the 'Source Code Management' section, change the branch to 'dev'.
+-   In the post-build actions, add a trigger to build another project and put the name of the job that will merge the code, e.g. merge-job.
+
+### Create a new Jenkins job for merging
+
+-   Click 'New Item' on the Jenkins dashboard.
+-   Enter the name of the job you put in the post-build actions of the previous job and select 'Freestyle project'.
+-   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
+-   Add the private SSH key to the credentials part.
+-   Specify the dev branch.
+-   In post-build actions, add a 'Git Publisher' and select 'Merge before build' and 'Push only if build succeeds'.
+-   Specify the branch to merge into, e.g. 'main' and enter 'origin' in the 'Target remote name' field.
+-   Save the job.
+
+### Test the setup
+
+Now, whenever a change is pushed to the dev branch, the first Jenkins job will be triggered, and if it succeeds, it should trigger the second job to merge the code into the main branch.
+
+## Deploying an app on AWS with Jenkins
+
+### Create an EC2 instance
+
+Launch an EC2 instance and configure it ensuring SSH access is allowed as we will be SSHing into the instance from Jenkins.
+
+### Create a new Jenkins job
+
+-   Click 'New Item' on the Jenkins dashboard.
+-   Enter a name for the job and select 'Freestyle project'.
+-   In the 'Source Code Management' section, select 'Git' and provide the SSH repository URL.
+-   Add the private SSH key to the credentials part.
+-   Specify the branch to use.
+-   In the 'Build' section, add an 'Execute shell' build step.
+-   Enter the commands to SSH into the EC2 instance.
+    -   Use the `-o "StrictHostKeyChecking=no"` option to avoid the prompt for adding the host to known hosts.
+    -   Update the instance with the latest packages and install Nginx.
+    -   Add a reverse proxy to the Nginx configuration to forward traffic to the app running on port 3000.
+    -   Restart and enable Nginx.
+
+```bash
+ssh -o "StrictHostKeyChecking=no" ubuntu@<ec2-public-ip> <<EOF
+    sudo apt-get update -y
+    sudo apt-get upgrade -y
+
+    sudo apt-get install nginx -y
+
+    sudo sed -i "s|try_files .*;|proxy_pass http://127.0.0.1:3000;|g" /etc/nginx/sites-available/default
+
+    sudo systemctl restart nginx
+    sudo systemctl enable nginx
+EOF
+```
