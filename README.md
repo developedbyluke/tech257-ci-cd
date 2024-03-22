@@ -19,6 +19,9 @@
     -   [Create a new Jenkins job](#create-a-new-jenkins-job)
 -   [Integrating CD into the rest of the pipeline](#integrating-cd-into-the-rest-of-the-pipeline)
     -   [Test the setup](#test-the-setup-1)
+-   [Implementing Automated Deployment with Jenkins](#implementing-automated-deployment-with-jenkins)
+    -   [Create a new Jenkins job](#create-a-new-jenkins-job-1)
+    -   [Test the setup](#test-the-setup-2)
 
 ## What is CI/CD?
 
@@ -201,3 +204,32 @@ This will enable us to automatically deploy the app to AWS whenever we make a ch
 -   Wait for the Jenkins merge job to run and merge the code into the main branch.
 -   Wait for the Jenkins deploy job to run and deploy the app to AWS.
 -   Go to the EC2 instance public IP address in a browser and check if the app is running with the latest changes.
+
+## Implementing Automated Deployment with Jenkins
+
+Once the three jobs from the previous sections are set up, we can automate the entire process by chaining them together and finishing it off with a final job that will start the app on our EC2 instance.
+
+This will enable us to simply push code changes to the dev branch and have Jenkins take care of the rest, from merging the code to deploying it to AWS and starting the app, so we can see our changes live without any manual work.
+
+### Create a new Jenkins job
+
+-   Click 'New Item' on the Jenkins dashboard.
+-   Enter a name for the job and select 'Freestyle project'.
+-   In the 'Build Environment' section, select 'SSH Agent' and choose the credentials with the private key that is needed to SSH into the EC2 instance.
+-   In the 'Build' section, add an 'Execute shell' build step.
+-   Enter the commands to SSH into the EC2 instance and start the app.
+
+```bash
+ssh -o "StrictHostKeyChecking=no" ubuntu@54.154.166.106 <<EOF
+	# kill process listening on port 3000
+	kill -9 $(lsof -i:3000 -t) 2> /dev/null
+    cd app
+    npm install
+    nohup node app.js > /dev/null 2>81 &
+EOF
+```
+
+### Test the setup
+
+-   Make a change to the code and push it to the dev branch.
+-   Wait for the four Jenkins jobs to run and then go to the EC2 instance public IP address in a browser and check if the app is running with the latest changes.
