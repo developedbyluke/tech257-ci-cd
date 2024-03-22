@@ -22,6 +22,14 @@
 -   [Implementing Automated Deployment with Jenkins](#implementing-automated-deployment-with-jenkins)
     -   [Create a new Jenkins job](#create-a-new-jenkins-job-1)
     -   [Test the setup](#test-the-setup-2)
+-   [Building Jenkins on an EC2 instance](#building-jenkins-on-an-ec2-instance)
+    -   [Create EC2 instance](#create-ec2-instance)
+    -   [SSH into the instance](#ssh-into-the-instance)
+    -   [Install Java](#install-java)
+    -   [Install Jenkins](#install-jenkins)
+    -   [Start and Enable Jenkins](#start-and-enable-jenkins)
+    -   [Setup Jenkins](#setup-jenkins)
+    -   [Install SSH Agent Plugin](#install-ssh-agent-plugin)
 
 ## What is CI/CD?
 
@@ -233,3 +241,64 @@ EOF
 
 -   Make a change to the code and push it to the dev branch.
 -   Wait for the four Jenkins jobs to run and then go to the EC2 instance public IP address in a browser and check if the app is running with the latest changes.
+
+## Building Jenkins on an EC2 instance
+
+### Create EC2 instance
+
+-   Launch an EC2 instance with:
+    -   Ubuntu
+    -   Instance type: t2.micro
+    -   Security group: allow SSH, HTTP, and open port 8080 in the inbound rules
+
+### SSH into the instance
+
+```bash
+ssh -i <private-key> ubuntu@<ec2-public-ip>
+```
+
+### Install Java
+
+```bash
+sudo apt update
+sudo apt install openjdk-8-jdk -y
+```
+
+### Install Jenkins
+
+https://www.jenkins.io/doc/book/installing/linux/#debianubuntu
+
+```bash
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+### Start and Enable Jenkins
+
+```bash
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+```
+
+### Setup Jenkins
+
+https://www.jenkins.io/doc/book/installing/linux/#unlocking-jenkins
+
+-   Go to `http://<ec2-public-ip>:8080` in a browser.
+-   Enter the initial admin password from `/var/lib/jenkins/secrets/initialAdminPassword` by using the command `sudo nano <path>` to read it.
+-   Install suggested plugins.
+-   Create an admin user.
+-   Save and finish the setup.
+
+### Install SSH Agent Plugin
+
+This plugin is needed to SSH into other servers in Jenkins jobs.
+
+-   Go to 'Manage Jenkins' > 'Manage Plugins'.
+-   Click on the 'Available' tab and search for 'SSH Agent'.
+-   Install the plugin and restart Jenkins.
